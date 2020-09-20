@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <title>Confirmacion</title>
+</head>
+<body>
+    <!--<p>Hola! Se ha reportado un nuevo caso de emergencia a las .</p>
+    <p>Estos son los datos del usuario que ha realizado la denuncia:</p>
+    <ul>
+        <li>Nombre: </li>
+        <li>Teléfono: </li>
+        <li>DNI: </li>
+    </ul>
+    <p>Y esta es la posición reportada:</p>
+    <ul>
+        <li>Latitud: </li>
+        <li>Longitud: </li>
+        <li>
+            <a href="https://www.google.com/">
+                Ver en Google Maps
+            </a>
+        </li>
+    </ul>-->
+    
+    <p>Estimado {{ $name }}</p>
+    <p>Ha comprado {{ $num_cards }} cartones</p>
+    <p>Gracias</p>
+
+</body>
+</html>
