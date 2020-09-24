@@ -13,16 +13,18 @@ class ClientSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-
         $gender = $faker->randomElement(['male', 'female']);
+        $payment = ['Yape', 'Lukita', 'Blim', 'Tarjeta de credito', 'Deposito Bancario'];
 
-        $payment = ['Efectivo','Yape', 'Lukita', 'Tunqui','VISA'];
-
-    	foreach (range(1,500) as $index) {
+    	foreach (range(1,800) as $index) {
+            $fakermail = $faker->email;
+            $fakermail = str_replace(strrchr($fakermail,'@'), "@yopmail.com", $fakermail);
+            
             DB::table('clients')->insert([
                 'name' => $faker->name($gender),
                 'dni' => intval(rand(1,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9)),
-                'email' => $faker->email,
+                'foreign' => rand(0,1),
+                'email' => $fakermail,
                 //'cellphone' => $faker->phoneNumber,
                 'cellphone' => intval(rand(1,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9)),
                 'num_card_purchase' => rand(1, 15),

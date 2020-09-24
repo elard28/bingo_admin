@@ -39,9 +39,10 @@ class ClientController extends Controller
     {
         return DataTables::of(Client::get())
             ->addColumn('actions', function(Client $client) {
-                    return 
-                    '<a href="' . route('client.edit',$client->id) .'" class="btn btn-primary btn-circle btn-sm" title="Editar"><i class="fas fa-pen"></i>'/*.
-                    '<a href="' . route('client.destroy',$client->id) .'" class="btn btn-danger btn-circle btn-sm" title="Eliminar"><i class="fas fa-trash"></i>'*/;
+                    $actions = '<a href="' . route('client.edit',$client->id) .'" class="btn btn-primary btn-circle btn-sm" title="Editar"><i class="fas fa-pen"></i>';
+                    if($client->validated == '1')
+                        $actions = $actions . '<a href="' . route('client.resend_cardboards',$client->id) .'" class="btn btn-success btn-circle btn-sm" title="Reenviar cartones"><i class="fas fa-envelope"></i>';
+                    return $actions;
                 })
             ->editColumn('voucher', function(Client $client) {
                     if($client->voucher)
@@ -172,6 +173,7 @@ class ClientController extends Controller
         $client = Client::findOrFail($id);
         $client->name = $request->input('name');
         $client->dni = $request->input('dni');
+        $client->foreign = $request->input('foreign');
         $client->email = $request->input('email');
         $client->cellphone = $request->input('cellphone');
         $client->num_card_purchase = $request->input('num_card_purchase');
@@ -211,12 +213,90 @@ class ClientController extends Controller
 
     public function to_validate($id)
     {
+        $count_cards = Client::where('validated','1')->sum('num_card_purchase');
+
         $client = Client::find($id);
         $client->validated = '1';
         //$client->validated_timestamp = DB::raw('now()');
         $client->validated_timestamp = \Carbon\Carbon::now('America/Lima')->toDateTimeString();
+        $client->count_cards = $count_cards;
         $client->save();
 
+        $cards = [];
+        for($i = 0; $i < $client->num_card_purchase; $i++)
+        {
+            $num = $count_cards+$i+1;
+            $cards[$i] = 'cardboards/out-' . str_pad($num, 5, 0, STR_PAD_LEFT) . '.pdf';
+        }
+        
+        $nm = $client->name;
+        $nc = $client->num_card_purchase;
+        $eml = $client->email;
+        Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards) {
+            $message->from('correoenvio2021@gmail.com', 'Bingo');
+            $message->subject('Envio de cartones de bingo');
+            foreach ($cards as $card) {
+                $message->attach($card);
+            }
+            $message->to($eml);
+        });
+
         return redirect()->route('client')->with('status','Cliente ' . $client->name . ' validado');
+    }
+
+    public function resend_cardboards($id)
+    {
+        $client = Client::find($id);
+        $count_cards = $client->count_cards;
+
+        $cards = [];
+        for($i = 0; $i < $client->num_card_purchase; $i++)
+        {
+            $num = $count_cards+$i+1;
+            $cards[$i] = 'cardboards/out-' . str_pad($num, 5, 0, STR_PAD_LEFT) . '.pdf';
+        }
+        
+        $nm = $client->name;
+        $nc = $client->num_card_purchase;
+        $eml = $client->email;
+        Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards) {
+            $message->from('correoenvio2021@gmail.com', 'Bingo');
+            $message->subject('Envio de cartones de bingo');
+            foreach ($cards as $card) {
+                $message->attach($card);
+            }
+            $message->to($eml);
+        });
+
+        return redirect()->route('client')->with('status','Reenviado los cartones al cliente ' . $client->name . '.');
+    }
+
+    public function help_desk(Request $request)
+    {
+        /*$eml = 'nombre123@correo.com';
+        $emd = strrchr($eml,'@');
+        $eml = str_replace($emd, "@yopmail.com", $eml);
+        dd($eml);*/
+
+        $from = $request->input('from');
+        $name = $request->input('name');
+        $comment = $request->input('comment');
+
+        //$comment = str_replace('\r\n', '</p><p>', $comment);
+        
+        $cm = '';
+        $comment = explode("\r\n", $comment);
+        foreach($comment as $c)
+            $cm .= '<p>'.$c.'</p>';
+        //dd($cm);
+
+        $eml = 'jsantisteban@ucsp.edu.pe';
+        Mail::send('email.help-desk', ['from' => $from, 'name' => $name, 'comment' => $cm], function ($message) use($eml) {
+            $message->from('correoenvio2021@gmail.com', 'Bingo');
+            $message->subject('Mesa de ayuda');
+            $message->to($eml);
+        });
+
+        return redirect(url('/'))->with('status','Mensaje enviado.');
     }
 }

@@ -29,7 +29,7 @@
                       <th>Pago</th>
                       <th>Voucher</th>
                       <th>Validado</th>
-                      <th>Acción</th>
+                      <th>Acciones</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -42,7 +42,7 @@
                       <th>Pago</th>
                       <th>Voucher</th>
                       <th>Validado</th>
-                      <th>Acción</th>
+                      <th>Acciones</th>
                     </tr>
                   </tfoot>
 

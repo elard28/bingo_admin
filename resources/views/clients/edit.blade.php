@@ -33,6 +33,30 @@
 
                 <div class="form-group row">
                   <label class="col-md-2 col-form-label text-md-right">
+                    
+                  </label>
+                  <div class="col-sm-6">
+                  @if($client->foreign == '0')
+                  <div class="radio">
+                    <label><input type="radio" name="foreign" value="0" checked>Peruano</label>
+                  </div>
+                  <div class="radio">
+                    <label><input type="radio" name="foreign" value="1">Extranjero</label>
+                  </div>
+                  </div>
+                  @else
+                  <div class="radio">
+                    <label><input type="radio" name="foreign" value="0">Peruano</label>
+                  </div>
+                  <div class="radio">
+                    <label><input type="radio" name="foreign" value="1" checked>Extranjero</label>
+                  </div>
+                  </div>
+                  @endif
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-md-2 col-form-label text-md-right">
                     Correo:
                   </label>
                   <div class="col-sm-6">
@@ -54,7 +78,11 @@
                     Numero de cartones:
                   </label>
                   <div class="col-sm-1">
+                    @if($client->validated == '0')
                     {{ Form::number('num_card_purchase', $client->num_card_purchase, ['class' => 'form-control form-control-user', 'placeholder' => '', 'required']) }}
+                    @else
+                    {{ Form::number('num_card_purchase', $client->num_card_purchase, ['class' => 'form-control form-control-user', 'placeholder' => '', 'readonly']) }}
+                    @endif
                   </div>
                 </div>
 

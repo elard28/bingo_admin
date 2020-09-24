@@ -120,6 +120,7 @@
                         <a href="{{ route('client.create') }}">Registrar Pago</a>
                     @else
                         <a href="{{ route('client.create') }}">Registrar Pago</a>
+                        <a href="{{ route('client.help_desk') }}">Mesa de Ayuda</a>
                     @endauth
 
                 </div>

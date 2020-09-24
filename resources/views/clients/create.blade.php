@@ -32,6 +32,20 @@
 
                 <div class="form-group row">
                   <label class="col-md-2 col-form-label text-md-right">
+                    
+                  </label>
+                  <div class="col-sm-6">
+                  <div class="radio">
+                    <label><input type="radio" name="foreign" value="0" checked>Peruano</label>
+                  </div>
+                  <div class="radio">
+                    <label><input type="radio" name="foreign" value="1">Extranjero</label>
+                  </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-md-2 col-form-label text-md-right">
                     Correo:
                   </label>
                   <div class="col-sm-6">

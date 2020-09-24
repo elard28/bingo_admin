@@ -32,6 +32,15 @@ Route::put('client/{id}', 'ClientController@update')->name('client.update')->mid
 Route::delete('client/{id}/destroy', 'ClientController@destroy')->name('client.destroy')->middleware('auth');
 
 Route::get('client/{id}/validate', 'ClientController@to_validate')->name('client.to_validate')->middleware('auth');
+Route::get('client/{id}/resend', 'ClientController@resend_cardboards')->name('client.resend_cardboards')->middleware('auth');
+
+Route::get('help-desk', function () {
+    //$value = url()->previous();
+    //session(['url.intended' => url()->previous()]);
+
+    return view('clients.help-desk');
+});
+Route::post('help-desk', 'ClientController@help_desk')->name('client.help_desk');
 
 //Route::resource('client', 'ClientController');
 

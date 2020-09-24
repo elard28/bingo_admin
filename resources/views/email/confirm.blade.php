@@ -25,7 +25,7 @@
     </ul>-->
     
     <p>Estimado {{ $name }}</p>
-    <p>Ha comprado {{ $num_cards }} cartones</p>
+    <p>Ha comprado {{ $num_cards }} carton(es)</p>
     <p>Gracias</p>
 
 </body>

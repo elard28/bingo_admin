@@ -17,6 +17,7 @@ class CreateClientsTable extends Migration
             $table->id()->autoIncrement();
             $table->char('name', 100);
             $table->char('dni', 20);
+            $table->boolean('foreign');
             $table->char('email', 50);
             $table->char('cellphone', 20);
             $table->integer('num_card_purchase');
@@ -24,6 +25,7 @@ class CreateClientsTable extends Migration
             $table->char('voucher', 100)->nullable();
             $table->boolean('validated');
             $table->dateTime('validated_timestamp', 0)->nullable();
+            $table->integer('count_cards')->nullable();
             $table->timestamps();
         });
     }
