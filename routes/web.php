@@ -17,17 +17,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('client', 'ClientController@index')->name('client');
-Route::get('client/table', 'ClientController@indextable')->name('client.table');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('client', 'ClientController@index')->name('client')->middleware('auth');
+Route::get('client/table', 'ClientController@indextable')->name('client.table')->middleware('auth');
 
 Route::get('client/create', 'ClientController@create')->name('client.create');
 Route::post('client', 'ClientController@store')->name('client.store');
 
-Route::get('client/{id}/edit', 'ClientController@edit')->name('client.edit');
-Route::put('client/{id}', 'ClientController@update')->name('client.update');
-Route::delete('client/{id}/destroy', 'ClientController@destroy')->name('client.destroy');
+Route::get('client/{id}/edit', 'ClientController@edit')->name('client.edit')->middleware('auth');
+Route::put('client/{id}', 'ClientController@update')->name('client.update')->middleware('auth');
+Route::delete('client/{id}/destroy', 'ClientController@destroy')->name('client.destroy')->middleware('auth');
 
-Route::get('client/{id}/validate', 'ClientController@to_validate')->name('client.to_validate');
+Route::get('client/{id}/validate', 'ClientController@to_validate')->name('client.to_validate')->middleware('auth');
 
 //Route::resource('client', 'ClientController');
 

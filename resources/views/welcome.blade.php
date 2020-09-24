@@ -68,6 +68,7 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
+            {{--
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -81,8 +82,21 @@
                     @endauth
                 </div>
             @endif
+            --}}
 
-
+            <div class="top-right links">
+                    @auth
+                        <a href="{{ route('logout') }}"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            {{ __('Salir') }}
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}">Administración</a>
+                    @endauth
+                </div>
 
             <div class="content">
 
@@ -94,23 +108,20 @@
                 @endif
 
                 <div class="title m-b-md">
-                    Bingo
+                    <img src="{{ asset('logo/SEM-LOGO.png') }}" height="300">
                 </div>
 
                 <div class="links">
-                    <!--<a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>-->
+                    <!--<a href="{{ route('client') }}" >Clientes</a>
+                    <a href="{{ route('client.create') }}">Crear cliente</a>-->
 
-                    <a href="{{ route('client') }}" >Clientes</a>
-                    <a href="{{ route('client.create') }}">Crear cliente</a>
-                    <!--<a href="{{ route('cardboard') }}">Cartones</a>
-                    <a href="{{ route('cardboard.create') }}">Crear carton</a>-->
+                    @auth
+                        <a href="{{ route('client') }}" >Clientes</a>
+                        <a href="{{ route('client.create') }}">Registrar Pago</a>
+                    @else
+                        <a href="{{ route('client.create') }}">Registrar Pago</a>
+                    @endauth
+
                 </div>
             </div>
         </div>

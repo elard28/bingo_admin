@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use App\Client;
 use DB;
 use Mail;
+use Auth;
 use Yajra\Datatables\DataTables;
 
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
+    /*public function __construct()
+    {
+        $this->middleware('auth');
+    }*/
+    
     /**
      * Display a listing of the resource.
      *
@@ -23,22 +29,7 @@ class ClientController extends Controller
 
         /*if ($request->ajax())
         {
-            return DataTables::of(Client::get())
-                ->addColumn('actions', function(Client $client) {
-                        return '<a href="' . route('client.edit',$client->id) .'" class="btn btn-primary btn-circle btn-sm" title="Editar"><i class="fas fa-pen"></i>';
-                    })
-                ->editColumn('voucher', function(Client $client) {
-                        if($client->voucher)
-                            return '<img src="../../vouchers/' . $client->voucher . '" height="75">';
-                        else return 'No Voucher';
-                    })
-                ->editColumn('validated', function(Client $client) {
-                        if($client->validated)
-                            return $client->validated_timestamp;
-                        return '<a href="' . route('client.to_validate',$client->id) .'" class="btn btn-warning btn-circle btn-sm" title="Validar"><i class="fas fa-bell"></i>';
-                    })
-                ->rawColumns(['voucher', 'validated', 'actions'])
-                ->make(true);
+
         }*/
         
         return view('clients.index');
@@ -134,7 +125,13 @@ class ClientController extends Controller
         });
         
         //return redirect()->route('client')->with('status','Nuevo cliente creado.');
-        return redirect(session('url.intended'))->with('status','Nuevo cliente creado.');
+        
+        return redirect(session('url.intended'))->with('status','Registro completado.');
+
+        /*if(Auth::user())
+          return redirect()->route('client')->with('status','Nuevo cliente creado.');
+        else
+          return view('welcome')->with('status','Registro completado.');*/
     }
 
     /**
@@ -157,8 +154,9 @@ class ClientController extends Controller
     public function edit($id)
     {
         $client = Client::findOrFail($id);
+        $pi = ['Yape' => 'Yape', 'Lukita' => 'Lukita', 'Blim' => 'Blim', 'Tarjeta de credito' => 'Tarjeta de credito', 'Deposito bancario' => 'Deposito bancario'];
         //dd($client->name);
-        return view('clients.edit', ['client' => $client]);
+        return view('clients.edit', ['client' => $client, 'pi' => $pi]);
     }
 
     /**
