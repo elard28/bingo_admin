@@ -55,7 +55,7 @@
 
                 <div class="form-group row">
                   <label class="col-md-2 col-form-label text-md-right">
-                    Celular:
+                    Teléfono:
                   </label>
                   <div class="col-sm-6">
                     <input class="form-control form-control-user" name="cellphone" placeholder="000000000" required="required">
@@ -64,16 +64,16 @@
 
                 <div class="form-group row">
                   <label class="col-md-2 col-form-label text-md-right">
-                    Numero de cartones:
+                    Número de cartones:
                   </label>
-                  <div class="col-sm-1">
-                    <input type="number" class="form-control form-control-user" name="num_card_purchase" placeholder="0" required="required">
+                  <div class="col-sm-2">
+                    <input type="number" class="form-control form-control-user" name="num_card_purchase" placeholder="0" min="0" required="required">
                   </div>
                 </div>
 
                 <div class="form-group row">
                   <label class="col-md-2 col-form-label text-md-right">
-                    Pago de Institucion:
+                    Institución de pago:
                   </label>
                   <div class="col-sm-6">
                     <select class="form-control form-control-user" name="payment_institution" required="required">
@@ -89,12 +89,33 @@
 
                 <input type="hidden" name="validated" value="0">
 
+                <!--<div class="form-group row">
+                  <div class="col-md-2 text-md-right">
+                    <label>Voucher:</label>
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="file" class="form-control-file" name="voucher" id="voucher" required="required">
+                  </div>
+                </div>-->
+
                 <div class="form-group row">
                   <div class="col-md-2 text-md-right">
                     <label>Voucher:</label>
                   </div>
                   <div class="col-sm-6">
-                    <input type="file" class="form-control-file" name="voucher" required="required">
+                    <div class="form-check form-check-inline">
+                      <label>
+                        <input type="radio" name="vit" id="vit-image" checked>Imagen
+                      </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <label>
+                        <input type="radio" name="vit" id="vit-text">Número de transacción
+                      </label>
+                    </div>
+                    <div id="form-vit">
+                      <input type="file" class="form-control-file" name="voucher" required="required">
+                    </div>
                   </div>
                 </div>
 
@@ -123,5 +144,21 @@
             </div>
           </div>
 
+
+@endsection
+
+@section('scripts')
+
+<script type="text/javascript">
+$( "#vit-image" ).click(function() {
+  //alert( "imagen" );
+  $("#form-vit").html('<input type="file" class="form-control-file" name="voucher" required="required">');
+});
+
+$( "#vit-text" ).click(function() {
+  //alert( "texto" );
+  $("#form-vit").html('<input class="form-control form-control-user" name="voucher" placeholder="Número del voucher" required="required">');
+});
+</script>
 
 @endsection

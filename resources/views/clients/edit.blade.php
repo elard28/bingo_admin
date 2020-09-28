@@ -66,7 +66,7 @@
 
                 <div class="form-group row">
                   <label class="col-md-2 col-form-label text-md-right">
-                    Celular:
+                    Teléfono:
                   </label>
                   <div class="col-sm-6">
                     {{ Form::text('cellphone', $client->cellphone, ['class' => 'form-control form-control-user', 'placeholder' => '000000000', 'required']) }}
@@ -75,11 +75,11 @@
 
                 <div class="form-group row">
                   <label class="col-md-2 col-form-label text-md-right">
-                    Numero de cartones:
+                    Número de cartones:
                   </label>
-                  <div class="col-sm-1">
+                  <div class="col-sm-2">
                     @if($client->validated == '0')
-                    {{ Form::number('num_card_purchase', $client->num_card_purchase, ['class' => 'form-control form-control-user', 'placeholder' => '', 'required']) }}
+                    {{ Form::number('num_card_purchase', $client->num_card_purchase, ['class' => 'form-control form-control-user', 'placeholder' => '', 'min' => '0', 'required']) }}
                     @else
                     {{ Form::number('num_card_purchase', $client->num_card_purchase, ['class' => 'form-control form-control-user', 'placeholder' => '', 'readonly']) }}
                     @endif
@@ -88,7 +88,7 @@
 
                 <div class="form-group row">
                   <label class="col-md-2 col-form-label text-md-right">
-                    Pago de Institucion:
+                    Institución de pago:
                   </label>
                   <div class="col-sm-6">
                     {{ Form::select('payment_institution', $pi, $client->payment_institution, ['class' => 'form-control form-control-user', 'placeholder' => 'Elije..', 'required']) }}
@@ -96,14 +96,25 @@
                 </div>
 
 
-                
 
                 <div class="form-group row">
                   <div class="col-md-2 text-md-right">
                     <label>Voucher:</label>
                   </div>
                   <div class="col-sm-6">
-                    {{ Form::file('voucher', ['class' => 'form-control-file']) }}
+                    <div class="form-check form-check-inline">
+                      <label>
+                        <input type="radio" name="vit" id="vit-image" checked>Imagen
+                      </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <label>
+                        <input type="radio" name="vit" id="vit-text">Número de transacción
+                      </label>
+                    </div>
+                    <div id="form-vit">
+                      {{ Form::file('voucher', ['class' => 'form-control-file']) }}
+                    </div>
                   </div>
                 </div>
 
@@ -129,5 +140,22 @@
             </div>
           </div>
 
+
+@endsection
+
+
+@section('scripts')
+
+<script type="text/javascript">
+$( "#vit-image" ).click(function() {
+  //alert( "imagen" );
+  $("#form-vit").html('<input type="file" class="form-control-file" name="voucher">');
+});
+
+$( "#vit-text" ).click(function() {
+  //alert( "texto" );
+  $("#form-vit").html('<input class="form-control form-control-user" name="voucher" value="{{ $client->voucher }}" placeholder="Número del voucher">');
+});
+</script>
 
 @endsection

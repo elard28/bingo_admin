@@ -7,6 +7,9 @@ use DB;
 use Mail;
 use Auth;
 use Yajra\Datatables\DataTables;
+use App\Exports\ClientsExport;
+#use App\Imports\UsersImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Http\Request;
 
@@ -27,6 +30,9 @@ class ClientController extends Controller
         /*$clients = Client::get();
         return view('clients.index', ['clients' => $clients]);*/
 
+        //$v = 'imagen.png';
+        //dd(asset('vouchers/'.$v));
+
         /*if ($request->ajax())
         {
 
@@ -45,8 +51,12 @@ class ClientController extends Controller
                     return $actions;
                 })
             ->editColumn('voucher', function(Client $client) {
-                    if($client->voucher)
-                        return /*'<img src="../../vouchers/' . $client->voucher . '" height="75">'*/
+                    if($client->voucher){
+                        if(strstr($client->voucher, ':',true) == 'code')
+                            return substr(strrchr($client->voucher, ":"), 1);
+                        else{
+                            $voucher = asset('vouchers/'.$client->voucher);
+                            return /*'<img src="'.$voucher .'" class="img-fluid" height="75">';*/
 '<a hclass="dropdown-item" href="#" data-toggle="modal" data-target="#voucher'.$client->id.'" class="btn btn-info btn-circle btn-sm" >
 <i class="fas fa-sticky-note"></i>
 
@@ -63,19 +73,29 @@ class ClientController extends Controller
         </div>
         <div class="modal-body">
           <div class="text-center">
-            <img src="../../vouchers/'.$client->voucher.'" height="300">
+            <img src="'.$voucher.'" height="300">
           </div>
         </div>
       </div>
     </div>
   </div>';
-
+                        }
+                    }
                     else return '-';
                 })
             ->editColumn('validated', function(Client $client) {
                     if($client->validated)
-                        return $client->validated_timestamp;
+                        return date('d-m-Y', strtotime($client->validated_timestamp) );
                     return '<a href="' . route('client.to_validate',$client->id) .'" class="btn btn-warning btn-circle btn-sm" title="Validar"><i class="fas fa-bell"></i>';
+                })
+            ->editColumn('created_at', function(Client $client) {
+                    if($client->created_at)
+                        return date('d-m-Y', strtotime($client->created_at) );
+                })
+            ->editColumn('foreign', function(Client $client) {
+                    if($client->foreign)
+                        return 'Extranjero';
+                    return 'Peruano';
                 })
             ->rawColumns(['voucher', 'validated', 'actions'])
             ->make(true);
@@ -116,6 +136,8 @@ class ClientController extends Controller
             $request->merge(['voucher' => $imagename]);
             $image->move($destinationPath, $imagename);
         }
+        else
+            $request->merge(['voucher' => 'code:' . $request->input('voucher')]);
 
         Client::create($request->input());
 
@@ -155,6 +177,10 @@ class ClientController extends Controller
     public function edit($id)
     {
         $client = Client::findOrFail($id);
+        if(strstr($client->voucher, ':',true) == 'code')
+            $client->voucher = substr(strrchr($client->voucher, ":"), 1);
+        else $client->voucher = null;
+
         $pi = ['Yape' => 'Yape', 'Lukita' => 'Lukita', 'Blim' => 'Blim', 'Tarjeta de credito' => 'Tarjeta de credito', 'Deposito bancario' => 'Deposito bancario'];
         //dd($client->name);
         return view('clients.edit', ['client' => $client, 'pi' => $pi]);
@@ -183,12 +209,21 @@ class ClientController extends Controller
         $imagename = null;
         if($image)
         {
+            /*$this->validate($request,[
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            ]);*/
+
             $imagename = time() . $image->getClientOriginalname();
             $destinationPath = public_path('vouchers');
             //$request->merge(['voucher' => $imagename]);
             $image->move($destinationPath, $imagename);
 
             $client->voucher = $imagename;
+        }
+        else
+        {
+            if($request->input('voucher') != null)
+                $client->voucher = 'code:' . $request->input('voucher');
         }
 
         $client->save();
@@ -298,5 +333,11 @@ class ClientController extends Controller
         });
 
         return redirect(url('/'))->with('status','Mensaje enviado.');
+    }
+
+    public function export()
+    {
+        //dd('exportar');
+        return Excel::download(new ClientsExport, 'clients.csv');
     }
 }

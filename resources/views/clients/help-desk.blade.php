@@ -14,7 +14,7 @@
 
                 <div class="form-group row">
                   <label class="col-md-2 col-form-label text-md-right">
-                    Correo o Telefono:
+                    Correo o Teléfono:
                   </label>
                   <div class="col-sm-6">
                     {{ Form::text('from', null, ['class' => 'form-control form-control-user', 'placeholder' => '', 'required']) }}
