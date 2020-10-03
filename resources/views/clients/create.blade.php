@@ -80,7 +80,7 @@
                       <option selected>Elegir...</option>
                       <option value="Yape">Yape</option>
                       <option value="Lukita">Lukita</option>
-                      <option value="Blim">Blim</option>
+                      <option value="Plim">Plim</option>
                       <option value="Tarjeta de credito">Tarjeta de credito</option>
                       <option value="Deposito bancario">Deposito bancario</option>
                     </select>

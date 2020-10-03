@@ -181,7 +181,7 @@ class ClientController extends Controller
             $client->voucher = substr(strrchr($client->voucher, ":"), 1);
         else $client->voucher = null;
 
-        $pi = ['Yape' => 'Yape', 'Lukita' => 'Lukita', 'Blim' => 'Blim', 'Tarjeta de credito' => 'Tarjeta de credito', 'Deposito bancario' => 'Deposito bancario'];
+        $pi = ['Yape' => 'Yape', 'Lukita' => 'Lukita', 'Plim' => 'Plim', 'Tarjeta de credito' => 'Tarjeta de credito', 'Deposito bancario' => 'Deposito bancario'];
         //dd($client->name);
         return view('clients.edit', ['client' => $client, 'pi' => $pi]);
     }
