@@ -24,7 +24,7 @@
 
                 <div class="form-group row">
                   <label class="col-md-2 col-form-label text-md-right">
-                    DNI:
+                    Documento de Identidad:
                   </label>
                   <div class="col-sm-6">
                     {{ Form::text('dni', $client->dni, ['class' => 'form-control form-control-user', 'placeholder' => '00000000', 'required']) }}

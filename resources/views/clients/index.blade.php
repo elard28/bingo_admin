@@ -32,7 +32,7 @@
                     <tr>
                       <th>Nombre</th>
                       <th>Nacionalidad</th>
-                      <th>DNI</th>
+                      <th>Documento de Identidad</th>
                       <th>Correo</th>
                       <th>Teléfono</th>
                       <th>Tarjetas</th>
@@ -47,7 +47,7 @@
                     <tr>
                       <th>Nombre</th>
                       <th>Nacionalidad</th>
-                      <th>DNI</th>
+                      <th>Documento de Identidad</th>
                       <th>Correo</th>
                       <th>Teléfono</th>
                       <th>Tarjetas</th>

@@ -23,7 +23,7 @@
 
                 <div class="form-group row">
                   <label class="col-md-2 col-form-label text-md-right">
-                    DNI:
+                    Documento de Identidad:
                   </label>
                   <div class="col-sm-6">
                     <input type="text" class="form-control form-control-user" name="dni" placeholder="00000000" required="required">
