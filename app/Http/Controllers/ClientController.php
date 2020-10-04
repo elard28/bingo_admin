@@ -142,8 +142,8 @@ class ClientController extends Controller
         Client::create($request->input());
 
         Mail::send('email.confirm', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml) {
-            $message->from('correoenvio2021@gmail.com', 'Bingo');
-            $message->subject('Confirmacion de pago');
+            $message->from('Bingo.Solidaridad.en.Marcha@gmail.com', 'Bingo Solidaridad en Marcha Arequipa');
+            $message->subject('Confirmación de pago');
             $message->to($eml);
         });
         
@@ -268,8 +268,8 @@ class ClientController extends Controller
         $nc = $client->num_card_purchase;
         $eml = $client->email;
         Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards) {
-            $message->from('correoenvio2021@gmail.com', 'Bingo');
-            $message->subject('Envio de cartones de bingo');
+            $message->from('Bingo.Solidaridad.en.Marcha@gmail.com', 'Bingo Solidaridad en Marcha Arequipa');
+            $message->subject('Envío de cartones de bingo');
             foreach ($cards as $card) {
                 $message->attach($card);
             }
@@ -295,8 +295,8 @@ class ClientController extends Controller
         $nc = $client->num_card_purchase;
         $eml = $client->email;
         Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards) {
-            $message->from('correoenvio2021@gmail.com', 'Bingo');
-            $message->subject('Envio de cartones de bingo');
+            $message->from('Bingo.Solidaridad.en.Marcha@gmail.com', 'Bingo Solidaridad en Marcha Arequipa');
+            $message->subject('Reenvío de cartones de bingo');
             foreach ($cards as $card) {
                 $message->attach($card);
             }

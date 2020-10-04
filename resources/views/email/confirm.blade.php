@@ -6,27 +6,14 @@
     <title>Confirmacion</title>
 </head>
 <body>
-    <!--<p>Hola! Se ha reportado un nuevo caso de emergencia a las .</p>
-    <p>Estos son los datos del usuario que ha realizado la denuncia:</p>
-    <ul>
-        <li>Nombre: </li>
-        <li>Teléfono: </li>
-        <li>DNI: </li>
-    </ul>
-    <p>Y esta es la posición reportada:</p>
-    <ul>
-        <li>Latitud: </li>
-        <li>Longitud: </li>
-        <li>
-            <a href="https://www.google.com/">
-                Ver en Google Maps
-            </a>
-        </li>
-    </ul>-->
-    
-    <p>Estimado {{ $name }}</p>
-    <p>Ha comprado {{ $num_cards }} carton(es)</p>
-    <p>Gracias</p>
+
+    <p>
+        Estimado(a) {{ $name }},<br>
+        <br>
+        Muchas gracias por tu colaboración con el bingo pro fondos el Asilo San Vicente de Paúl, tu registro ha sido procesado exitosamente. En menos de 24h enviaremos los cartones que corresponden.<br>
+        <br>
+        ¡Dios te bendiga!<br>
+    </p>
 
 </body>
 </html>
