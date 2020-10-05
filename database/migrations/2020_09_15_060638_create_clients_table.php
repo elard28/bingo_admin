@@ -26,6 +26,7 @@ class CreateClientsTable extends Migration
             $table->boolean('validated');
             $table->dateTime('validated_timestamp', 0)->nullable();
             $table->integer('count_cards')->nullable();
+            $table->char('token_timestamp', 30)->unique();
             $table->timestamps();
         });
     }

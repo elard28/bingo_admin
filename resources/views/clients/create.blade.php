@@ -94,6 +94,8 @@
 
                 <input type="hidden" name="validated" value="0">
 
+                <input type="hidden" name="token_timestamp" value="{{ $token_timestamp }}">
+
                 <!--<div class="form-group row">
                   <div class="col-md-2 text-md-right">
                     <label>Voucher:</label>

@@ -112,7 +112,11 @@ class ClientController extends Controller
         //setcookie("urlback", $value);
         session(['url.intended' => url()->previous()]);
 
-        return view('clients.create');
+        $token_timestamp = intval(\Carbon\Carbon::now('America/Lima')->getPreciseTimestamp());
+
+        //dd($token_timestamp);
+
+        return view('clients.create',['token_timestamp' => $token_timestamp]);
     }
 
     /**
@@ -124,7 +128,7 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'dni' => 'unique:clients',
+            'token_timestamp' => 'unique:clients',
         ]);
 
         $nm = $request->input('name');
