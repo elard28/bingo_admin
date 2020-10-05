@@ -6,7 +6,7 @@
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Nuevo registro de pago</h6>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="loader">
                 
 
               <form method="POST" action="{{ route('client.store') }}" enctype="multipart/form-data">
@@ -77,7 +77,7 @@
                   </label>
                   <div class="col-sm-6">
                     <select class="form-control form-control-user" name="payment_institution" required="required">
-                      <option selected>Elegir...</option>
+                      <option value="" selected>Elegir...</option>
                       <option value="Yape">Yape</option>
                       <option value="Lukita">Lukita</option>
                       <option value="Plim">Plim</option>
@@ -159,6 +159,22 @@ $( "#vit-text" ).click(function() {
   //alert( "texto" );
   $("#form-vit").html('<input class="form-control form-control-user" name="voucher" placeholder="Número del voucher" required="required">');
 });
+
+$('form').submit(function(){
+    $('#loader').waitMe({
+    effect: 'ios',
+    text: 'Guardando datos...',
+    bg: 'rgba(255,255,255,0.7)',
+    color: '#000',
+    maxSize: '',
+    waitTime: -1,
+    source: 'img.svg',
+    textPos: 'vertical',
+    fontSize: '',
+    onClose: function() {}
+  });
+});
+
 </script>
 
 @endsection

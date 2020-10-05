@@ -17,6 +17,7 @@
   <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
   <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
   <!--<link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">-->
+  <link href="{{ asset('vendor/waitMe/waitMe.min.css') }}" rel="stylesheet">
 
 
 </head>
@@ -233,6 +234,8 @@
   <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
   <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
   
+  <script src="{{ asset('vendor/waitMe/waitMe.min.js') }}"></script>
+
   @yield('scripts')
 
 

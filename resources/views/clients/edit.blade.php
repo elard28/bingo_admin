@@ -6,7 +6,7 @@
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Modificar datos de cliente</h6>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="loader">
                 
 
               <form method="POST" action="{{ route('client.update',['id' => $client->id]) }}" enctype="multipart/form-data">
@@ -156,6 +156,23 @@ $( "#vit-text" ).click(function() {
   //alert( "texto" );
   $("#form-vit").html('<input class="form-control form-control-user" name="voucher" value="{{ $client->voucher }}" placeholder="Número del voucher">');
 });
+
+
+$('form').submit(function(){
+    $('#loader').waitMe({
+    effect: 'ios',
+    text: 'Guardando datos...',
+    bg: 'rgba(255,255,255,0.7)',
+    color: '#000',
+    maxSize: '',
+    waitTime: -1,
+    source: 'img.svg',
+    textPos: 'vertical',
+    fontSize: '',
+    onClose: function() {}
+  });
+});
+
 </script>
 
 @endsection
