@@ -123,6 +123,10 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'dni' => 'unique:clients',
+        ]);
+
         $nm = $request->input('name');
         $nc = $request->input('num_card_purchase');
         $eml = $request->input('email');
@@ -149,7 +153,7 @@ class ClientController extends Controller
         
         //return redirect()->route('client')->with('status','Nuevo cliente creado.');
         
-        return redirect(session('url.intended'))->with('status','Registro completado.');
+        return redirect(session('url.intended'))->with('status','Registro completado. Se enviara un correo de notificacion (es posible que se encuentre en spam)');
 
         /*if(Auth::user())
           return redirect()->route('client')->with('status','Nuevo cliente creado.');

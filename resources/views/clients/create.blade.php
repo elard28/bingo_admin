@@ -26,7 +26,12 @@
                     Documento de Identidad:
                   </label>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" name="dni" placeholder="00000000" required="required">
+                    <input type="text" class="form-control form-control-user @error('dni') is-invalid @enderror" name="dni" placeholder="00000000" required="required">
+                    @error('dni')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>Ya esta registrado con este numero (revisar su correo)</strong>
+                        </span>
+                    @enderror
                   </div>
                 </div>
 

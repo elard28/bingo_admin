@@ -6,7 +6,7 @@
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Mesa de ayuda</h6>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="loader">
                 
 
               <form method="POST" action="{{ route('client.help_desk') }}" >
@@ -80,5 +80,22 @@ for(var i=0;i<count;i++){
         }
     }
 }
+
+$('form').submit(function(){
+    $('#loader').waitMe({
+    effect: 'ios',
+    text: 'Enviando comentario...',
+    bg: 'rgba(255,255,255,0.7)',
+    color: '#000',
+    maxSize: '',
+    waitTime: -1,
+    source: 'img.svg',
+    textPos: 'vertical',
+    fontSize: '',
+    onClose: function() {}
+  });
+});
+
+
 </script>
 @endsection

@@ -147,6 +147,8 @@
 @section('scripts')
 
 <script type="text/javascript">
+
+
 $( "#vit-image" ).click(function() {
   //alert( "imagen" );
   $("#form-vit").html('<input type="file" class="form-control-file" name="voucher">');
@@ -161,7 +163,7 @@ $( "#vit-text" ).click(function() {
 $('form').submit(function(){
     $('#loader').waitMe({
     effect: 'ios',
-    text: 'Guardando datos...',
+    text: 'Actualizando datos...',
     bg: 'rgba(255,255,255,0.7)',
     color: '#000',
     maxSize: '',
@@ -169,7 +171,7 @@ $('form').submit(function(){
     source: 'img.svg',
     textPos: 'vertical',
     fontSize: '',
-    onClose: function() {}
+    //onClose: function() {}
   });
 });
 
