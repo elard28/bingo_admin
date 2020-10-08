@@ -38,7 +38,7 @@
                       <th>Tarjetas</th>
                       <th>Pago</th>
                       <th>Voucher</th>
-                      <th>Creado</th>
+                      <th>Registrado</th>
                       <th>Validado</th>
                       <th>Acciones</th>
                     </tr>
@@ -53,7 +53,7 @@
                       <th>Tarjetas</th>
                       <th>Pago</th>
                       <th>Voucher</th>
-                      <th>Creado</th>
+                      <th>Registrado</th>
                       <th>Validado</th>
                       <th>Acciones</th>
                     </tr>
@@ -88,6 +88,7 @@
           {data: 'actions', name: 'actions'},
       ],
       responsive: true,
+      order: [ 8, "asc" ],
       //pageLength: 20,
       language: {
           //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",

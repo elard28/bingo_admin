@@ -10,8 +10,9 @@ use Yajra\Datatables\DataTables;
 use App\Exports\ClientsExport;
 #use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
-
 use Illuminate\Http\Request;
+use LynX39\LaraPdfMerger\Facades\PdfMerger;
+use File;
 
 class ClientController extends Controller
 {
@@ -189,7 +190,7 @@ class ClientController extends Controller
             $client->voucher = substr(strrchr($client->voucher, ":"), 1);
         else $client->voucher = null;
 
-        $pi = ['Yape' => 'Yape', 'Lukita' => 'Lukita', 'Plim' => 'Plim', 'Tarjeta de credito' => 'Tarjeta de credito', 'Deposito bancario' => 'Deposito bancario'];
+        $pi = ['Yape' => 'Yape', 'Lukita' => 'Lukita', 'Plim' => 'Plim', 'Tarjeta de credito' => 'Tarjeta de credito', 'Deposito bancario BBVA' => 'Deposito bancario BBVA', 'Deposito bancario BCP' => 'Deposito bancario BCP'];
         //dd($client->name);
         return view('clients.edit', ['client' => $client, 'pi' => $pi]);
     }
@@ -272,17 +273,27 @@ class ClientController extends Controller
             $cards[$i] = 'cardboards/out-' . str_pad($num, 5, 0, STR_PAD_LEFT) . '.pdf';
         }
         
+        $name = $client->name;        
+        $name = str_replace(" ", "_", mb_strtolower($name));
+        $pdfMerger = PDFMerger::init();
+        foreach ($cards as $card) 
+            $pdfMerger->addPDF($card, 'all');
+        $pdfMerger->merge();
+        $pdfMerger->save(public_path('cardboards/cartones_'.$name.'.pdf'), "file");
+
         $nm = $client->name;
         $nc = $client->num_card_purchase;
         $eml = $client->email;
-        Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards) {
+        Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards,$name) {
             $message->from('Bingo.Solidaridad.en.Marcha@gmail.com', 'Bingo Solidaridad en Marcha Arequipa');
             $message->subject('Envío de cartones de bingo');
-            foreach ($cards as $card) {
+            /*foreach ($cards as $card) {
                 $message->attach($card);
-            }
+            }*/
+            $message->attach('cardboards/cartones_'.$name.'.pdf');
             $message->to($eml);
         });
+        File::delete(public_path('cardboards/cartones_'.$name.'.pdf'));
 
         return redirect()->route('client')->with('status','Cliente ' . $client->name . ' validado');
     }
@@ -299,17 +310,27 @@ class ClientController extends Controller
             $cards[$i] = 'cardboards/out-' . str_pad($num, 5, 0, STR_PAD_LEFT) . '.pdf';
         }
         
+        $name = $client->name;        
+        $name = str_replace(" ", "_", mb_strtolower($name));
+        $pdfMerger = PDFMerger::init();
+        foreach ($cards as $card) 
+            $pdfMerger->addPDF($card, 'all');
+        $pdfMerger->merge();
+        $pdfMerger->save(public_path('cardboards/cartones_'.$name.'.pdf'), "file");
+
         $nm = $client->name;
         $nc = $client->num_card_purchase;
         $eml = $client->email;
-        Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards) {
+        Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards,$name) {
             $message->from('Bingo.Solidaridad.en.Marcha@gmail.com', 'Bingo Solidaridad en Marcha Arequipa');
             $message->subject('Reenvío de cartones de bingo');
-            foreach ($cards as $card) {
+            /*foreach ($cards as $card) {
                 $message->attach($card);
-            }
+            }*/
+            $message->attach('cardboards/cartones_'.$name.'.pdf');
             $message->to($eml);
         });
+        File::delete(public_path('cardboards/cartones_'.$name.'.pdf'));
 
         return redirect()->route('client')->with('status','Reenviado los cartones al cliente ' . $client->name . '.');
     }

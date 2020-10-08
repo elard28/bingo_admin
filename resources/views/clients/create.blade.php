@@ -87,7 +87,8 @@
                       <option value="Lukita">Lukita</option>
                       <option value="Plim">Plim</option>
                       <option value="Tarjeta de credito">Tarjeta de credito</option>
-                      <option value="Deposito bancario">Deposito bancario</option>
+                      <option value="Deposito bancario BBVA">Deposito bancario BBVA</option>
+                      <option value="Deposito bancario BCP">Deposito bancario BCP</option>
                     </select>
                   </div>
                 </div>
