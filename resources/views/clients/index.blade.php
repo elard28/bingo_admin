@@ -115,7 +115,7 @@
               "sSortDescending": ": Activar para ordenar la columna de manera descendente"
           }
       },
-      initComplete: function () {
+      /*initComplete: function () {
             $(".sender").click(function(){
               var name = $(this).attr('name');
               $('#loader').waitMe({
@@ -147,7 +147,7 @@
                 //onClose: function() {}
               });
           });
-      }
+      },*/
     });
 
   });
