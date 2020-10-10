@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use LynX39\LaraPdfMerger\Facades\PdfMerger;
 use File;
 
+define("MAX_CARDS_MESSAGE", 50);
+
 class ClientController extends Controller
 {
     /*public function __construct()
@@ -275,25 +277,61 @@ class ClientController extends Controller
         
         $name = $client->name;        
         $name = str_replace(" ", "_", mb_strtolower($name));
-        $pdfMerger = PDFMerger::init();
-        foreach ($cards as $card) 
-            $pdfMerger->addPDF($card, 'all');
-        $pdfMerger->merge();
-        $pdfMerger->save(public_path('cardboards/cartones_'.$name.'.pdf'), "file");
+        
+        $max_cards = MAX_CARDS_MESSAGE;
+        
+        if($client->num_card_purchase <= $max_cards)
+        {
+            $pdfMerger = PDFMerger::init();
+            foreach ($cards as $card) 
+                $pdfMerger->addPDF($card, 'all');
+            $pdfMerger->merge();
+            $pdfMerger->save(public_path('cardboards/cartones_'.$name.'.pdf'), "file");
 
-        $nm = $client->name;
-        $nc = $client->num_card_purchase;
-        $eml = $client->email;
-        Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards,$name) {
-            $message->from('Bingo.Solidaridad.en.Marcha@gmail.com', 'Bingo Solidaridad en Marcha Arequipa');
-            $message->subject('Envío de cartones de bingo');
-            /*foreach ($cards as $card) {
-                $message->attach($card);
-            }*/
-            $message->attach('cardboards/cartones_'.$name.'.pdf');
-            $message->to($eml);
-        });
-        File::delete(public_path('cardboards/cartones_'.$name.'.pdf'));
+            $nm = $client->name;
+            $nc = $client->num_card_purchase;
+            $eml = $client->email;
+            Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards,$name) {
+                $message->from('Bingo.Solidaridad.en.Marcha@gmail.com', 'Bingo Solidaridad en Marcha Arequipa');
+                $message->subject('Envío de cartones de bingo');
+                /*foreach ($cards as $card) {
+                    $message->attach($card);
+                }*/
+                $message->attach('cardboards/cartones_'.$name.'.pdf');
+                $message->to($eml);
+            });
+            File::delete(public_path('cardboards/cartones_'.$name.'.pdf'));
+        }
+        else
+        {
+            $parts = 0;
+            $count = 1;
+            do {
+                $pdfMerger = PDFMerger::init();
+                $max = $parts + $max_cards;
+                if($max > $client->num_card_purchase) //para comprobar el modulo
+                    $max = $parts + $client->num_card_purchase%$max_cards;
+                
+                for ($i=$parts; $i < $max; $i++) 
+                    $pdfMerger->addPDF($cards[$i], 'all');
+                $pdfMerger->merge();
+                $pdfMerger->save(public_path('cardboards/cartones_'.$name.'_'.$count.'.pdf'), "file");
+
+                $nm = $client->name;
+                $nc = $client->num_card_purchase;
+                $eml = $client->email;
+                Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards,$name,$count) {
+                    $message->from('Bingo.Solidaridad.en.Marcha@gmail.com', 'Bingo Solidaridad en Marcha Arequipa');
+                    $message->subject('Envío de cartones de bingo ('.$count.')');
+                    $message->attach('cardboards/cartones_'.$name.'_'.$count.'.pdf');
+                    $message->to($eml);
+                });
+                File::delete(public_path('cardboards/cartones_'.$name.'_'.$count.'.pdf'));
+
+                $parts += $max_cards;
+                $count++;
+            } while ($parts < $client->num_card_purchase);
+        }
 
         return redirect()->route('client')->with('status','Cliente ' . $client->name . ' validado');
     }
@@ -312,25 +350,61 @@ class ClientController extends Controller
         
         $name = $client->name;        
         $name = str_replace(" ", "_", mb_strtolower($name));
-        $pdfMerger = PDFMerger::init();
-        foreach ($cards as $card) 
-            $pdfMerger->addPDF($card, 'all');
-        $pdfMerger->merge();
-        $pdfMerger->save(public_path('cardboards/cartones_'.$name.'.pdf'), "file");
 
-        $nm = $client->name;
-        $nc = $client->num_card_purchase;
-        $eml = $client->email;
-        Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards,$name) {
-            $message->from('Bingo.Solidaridad.en.Marcha@gmail.com', 'Bingo Solidaridad en Marcha Arequipa');
-            $message->subject('Reenvío de cartones de bingo');
-            /*foreach ($cards as $card) {
-                $message->attach($card);
-            }*/
-            $message->attach('cardboards/cartones_'.$name.'.pdf');
-            $message->to($eml);
-        });
-        File::delete(public_path('cardboards/cartones_'.$name.'.pdf'));
+        $max_cards = MAX_CARDS_MESSAGE;
+        
+        if($client->num_card_purchase <= $max_cards)
+        {
+            $pdfMerger = PDFMerger::init();
+            foreach ($cards as $card) 
+                $pdfMerger->addPDF($card, 'all');
+            $pdfMerger->merge();
+            $pdfMerger->save(public_path('cardboards/cartones_'.$name.'.pdf'), "file");
+
+            $nm = $client->name;
+            $nc = $client->num_card_purchase;
+            $eml = $client->email;
+            Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards,$name) {
+                $message->from('Bingo.Solidaridad.en.Marcha@gmail.com', 'Bingo Solidaridad en Marcha Arequipa');
+                $message->subject('Reenvío de cartones de bingo');
+                //foreach ($cards as $card) {
+                //    $message->attach($card);
+                //}
+                $message->attach('cardboards/cartones_'.$name.'.pdf');
+                $message->to($eml);
+            });
+            File::delete(public_path('cardboards/cartones_'.$name.'.pdf'));
+        }
+        else
+        {
+            $parts = 0;
+            $count = 1;
+            do {
+                $pdfMerger = PDFMerger::init();
+                $max = $parts + $max_cards;
+                if($max > $client->num_card_purchase) //para comprobar el modulo
+                    $max = $parts + $client->num_card_purchase%$max_cards;
+                
+                for ($i=$parts; $i < $max; $i++) 
+                    $pdfMerger->addPDF($cards[$i], 'all');
+                $pdfMerger->merge();
+                $pdfMerger->save(public_path('cardboards/cartones_'.$name.'_'.$count.'.pdf'), "file");
+
+                $nm = $client->name;
+                $nc = $client->num_card_purchase;
+                $eml = $client->email;
+                Mail::send('email.cardboards', ['name' => $nm, 'num_cards' => $nc], function ($message) use($eml,$cards,$name,$count) {
+                    $message->from('Bingo.Solidaridad.en.Marcha@gmail.com', 'Bingo Solidaridad en Marcha Arequipa');
+                    $message->subject('Reenvío de cartones de bingo ('.$count.')');
+                    $message->attach('cardboards/cartones_'.$name.'_'.$count.'.pdf');
+                    $message->to($eml);
+                });
+                File::delete(public_path('cardboards/cartones_'.$name.'_'.$count.'.pdf'));
+
+                $parts += $max_cards;
+                $count++;
+            } while ($parts < $client->num_card_purchase);
+        }
 
         return redirect()->route('client')->with('status','Reenviado los cartones al cliente ' . $client->name . '.');
     }
