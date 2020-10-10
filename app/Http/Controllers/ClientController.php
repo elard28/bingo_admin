@@ -50,7 +50,7 @@ class ClientController extends Controller
             ->addColumn('actions', function(Client $client) {
                     $actions = '<a href="' . route('client.edit',$client->id) .'" class="btn btn-primary btn-circle btn-sm" title="Editar"><i class="fas fa-pen"></i>';
                     if($client->validated == '1')
-                        $actions = $actions . '<a href="' . route('client.resend_cardboards',$client->id) .'" class="btn btn-success btn-circle btn-sm" title="Reenviar cartones"><i class="fas fa-envelope"></i>';
+                        $actions = $actions . '<a href="' . route('client.resend_cardboards',$client->id) .'" class="btn btn-success btn-circle btn-sm resender" title="Reenviar cartones" name="'.$client->name.'"><i class="fas fa-envelope"></i>';
                     return $actions;
                 })
             ->editColumn('voucher', function(Client $client) {
@@ -89,7 +89,7 @@ class ClientController extends Controller
             ->editColumn('validated', function(Client $client) {
                     if($client->validated)
                         return date('d-m-Y', strtotime($client->validated_timestamp) );
-                    return '<a href="' . route('client.to_validate',$client->id) .'" class="btn btn-warning btn-circle btn-sm" title="Validar"><i class="fas fa-bell"></i>';
+                    return '<a href="' . route('client.to_validate',$client->id) .'" class="btn btn-warning btn-circle btn-sm sender" title="Validar" name="'.$client->name.'"><i class="fas fa-bell"></i>';
                 })
             ->editColumn('created_at', function(Client $client) {
                     if($client->created_at)

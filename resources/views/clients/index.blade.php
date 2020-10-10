@@ -2,7 +2,7 @@
 
 @section('content')
 
-          <div class="card shadow mb-4">
+          <div class="card shadow mb-4" id="loader">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" >
               <h6 class="m-0 font-weight-bold text-primary">Lista de clientes</h6>
 
@@ -115,7 +115,43 @@
               "sSortDescending": ": Activar para ordenar la columna de manera descendente"
           }
       },
+      initComplete: function () {
+            $(".sender").click(function(){
+              var name = $(this).attr('name');
+              $('#loader').waitMe({
+                effect: 'ios',
+                text: 'Validando y enviando cartones a '+name+'. Esto puede tardar un rato...',
+                bg: 'rgba(255,255,255,0.7)',
+                color: '#000',
+                maxSize: '',
+                waitTime: -1,
+                source: 'img.svg',
+                textPos: 'vertical',
+                fontSize: '',
+                //onClose: function() {}
+              });
+          });
+
+          $(".resender").click(function(){
+              var name = $(this).attr('name');
+              $('#loader').waitMe({
+                effect: 'ios',
+                text: 'Reenviando cartones a '+name+'. Esto puede tardar un rato...',
+                bg: 'rgba(255,255,255,0.7)',
+                color: '#000',
+                maxSize: '',
+                waitTime: -1,
+                source: 'img.svg',
+                textPos: 'vertical',
+                fontSize: '',
+                //onClose: function() {}
+              });
+          });
+      }
     });
+
   });
+
 </script>
+
 @endsection
